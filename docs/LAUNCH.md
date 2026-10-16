@@ -16,7 +16,7 @@
 - [ ] Cancel and archive all `TEST` orders.
 
 ## 3. Deploy to Vercel
-Vercel's Hobby plan is for personal, non-commercial use only, so a live store needs **Vercel Pro (US$20/month)**. Cloudflare Workers (via OpenNext) is a cheaper alternative, but that would need extra setup.
+The free **Hobby** plan is fine for development and testing (what we use now). Vercel's terms limit Hobby to personal, non-commercial use, so **move to Pro (US$20/month) before taking real orders**, or switch to Cloudflare Workers via OpenNext (extra setup).
 
 1. vercel.com → Add New → Project → import `dangol-199929/fox-ds`. The framework is detected as Next.js. Node 24 comes from `package.json` engines.
 2. Settings → Environment Variables. Add these for **Production** (and Preview if you test there):
