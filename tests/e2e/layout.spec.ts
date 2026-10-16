@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 // Viewport widths from the brief. Each page must render without sideways scrolling.
 const widths = [320, 375, 390, 430, 768, 1024, 1440];
-const pages = ["/", "/shop", "/products/clean-desk-kit", "/shipping", "/privacy", "/contact", "/no-such-page"];
+const pages = ["/", "/shop", "/products/clean-desk-kit", "/shipping", "/privacy", "/contact", "/account", "/no-such-page"];
 
 for (const path of pages) {
   test.describe(`${path} layout`, () => {

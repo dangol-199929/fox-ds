@@ -1,3 +1,4 @@
+import { UserIcon } from "lucide-react";
 import Link from "next/link";
 import { CartButton } from "@/components/cart/cart-button";
 import { mainNav } from "@/lib/site";
@@ -24,7 +25,14 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <div className="ml-auto md:ml-2">
+        <div className="ml-auto flex items-center md:ml-2">
+          <Link
+            href="/account"
+            aria-label="Your account"
+            className="grid size-11 place-items-center rounded-full transition-colors hover:bg-secondary"
+          >
+            <UserIcon className="size-5" aria-hidden="true" />
+          </Link>
           <CartButton />
         </div>
       </div>
