@@ -57,3 +57,40 @@ test("unknown product shows the not-found state", async ({ page }) => {
   await page.goto("/products/this-product-does-not-exist");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(/isn.t available|tidied away/);
 });
+
+test.describe("shop filters", () => {
+  test("filters come from the URL, show as chips and can be cleared", async ({ page }) => {
+    await page.goto("/shop?filter=filter.v.availability.1");
+    const chips = page.getByRole("list", { name: "Active filters" });
+    await expect(chips.getByRole("button", { name: /Availability: In stock/ })).toBeVisible();
+    await chips.getByRole("button", { name: "Clear all" }).click();
+    await expect(page).toHaveURL(/\/shop$/);
+  });
+
+  test("shows a helpful empty state when nothing matches", async ({ page }) => {
+    await page.goto("/shop?min=99999");
+    await expect(page.getByText("No products match these filters.")).toBeVisible();
+    await page.getByRole("link", { name: "Clear all filters" }).click();
+    await expect(page).toHaveURL(/\/shop$/);
+    await expect(page.getByRole("link", { name: "Clean Desk Kit" }).first()).toBeVisible();
+  });
+
+  test("mobile filter drawer opens with a filter count", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/shop?filter=filter.v.availability.1");
+    await page.getByRole("button", { name: "Filters (1)" }).click();
+    const drawer = page.getByRole("dialog", { name: "Filters" });
+    await expect(drawer.getByRole("checkbox", { name: /In stock/ })).toBeChecked();
+    // Clearing the only filter returns to the plain shop, where (with a small
+    // catalogue) the filter UI is hidden again, so click rather than uncheck().
+    await drawer.getByRole("checkbox", { name: /In stock/ }).click();
+    await expect(page).toHaveURL(/\/shop$/);
+    await expect(page.getByRole("button", { name: /Filters/ })).toHaveCount(0);
+  });
+
+  test("ignores junk in the URL instead of erroring", async ({ page }) => {
+    const response = await page.goto('/shop?filter={"x":1}&sort=newest&min=abc');
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { level: 1, name: "Shop" })).toBeVisible();
+  });
+});

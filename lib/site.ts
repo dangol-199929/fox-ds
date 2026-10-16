@@ -5,6 +5,12 @@ export const siteConfig = {
   name: "Clean Desk Kit",
   /** Handle of the hero product in Shopify. */
   featuredProductHandle: "clean-desk-kit",
+  /**
+   * Shopify collection used for "More for your desk" and as the fallback for
+   * recommendations. "frontpage" is Shopify's built-in Home page collection;
+   * add products to it in Shopify admin to feature them.
+   */
+  featuredCollectionHandle: "frontpage",
   /** Optional: set NEXT_PUBLIC_CONTACT_EMAIL once the business inbox exists. */
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || null,
   /** Add real profile URLs when the accounts exist; empty entries are hidden. */

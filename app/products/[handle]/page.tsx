@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { FAQAccordion } from "@/components/home/faq-accordion";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { PurchasePanel } from "@/components/product/purchase-panel";
+import { RecommendedProducts } from "@/components/product/recommended-products";
 import { TO_CONFIRM } from "@/lib/content";
 import { getProduct, getProducts } from "@/lib/shopify/products";
 
@@ -93,6 +95,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
           </dl>
         </div>
       </section>
+
+      <Suspense fallback={null}>
+        <RecommendedProducts handle={product.handle} />
+      </Suspense>
 
       <section aria-labelledby="product-faq-heading" className="mx-auto w-full max-w-4xl px-4 py-14 sm:px-8 lg:py-20">
         <h2 id="product-faq-heading" className="mb-6 text-title font-semibold">

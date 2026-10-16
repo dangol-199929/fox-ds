@@ -67,3 +67,19 @@ describe("live Shopify store", () => {
     ).rejects.toMatchObject({ kind: "user" });
   });
 });
+
+describe("live discovery", () => {
+  it("searches with Shopify's filters and sorting", async () => {
+    vi.resetModules();
+    const { searchProducts } = await import("@/lib/shopify/search");
+    const base = await searchProducts();
+    expect(base.totalCount).toBeGreaterThan(0);
+    expect(base.filters.map((f) => f.id)).toContain("filter.v.availability");
+
+    const inStock = await searchProducts({ sort: "price-asc", productFilters: [{ available: true }] });
+    expect(inStock.products.every((p) => p.availableForSale)).toBe(true);
+
+    const none = await searchProducts({ productFilters: [{ price: { min: 99999 } }] });
+    expect(none.products).toEqual([]);
+  });
+});

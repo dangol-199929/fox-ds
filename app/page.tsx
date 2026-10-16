@@ -3,6 +3,7 @@ import { BenefitsSection } from "@/components/home/benefits-section";
 import { BeforeAfterSection } from "@/components/home/before-after-section";
 import { FAQAccordion } from "@/components/home/faq-accordion";
 import { FeaturedProduct, FeaturedProductSkeleton } from "@/components/home/featured-product";
+import { FeaturedProducts } from "@/components/home/featured-products";
 import { HeroSection } from "@/components/home/hero-section";
 import { HowItWorks } from "@/components/home/how-it-works";
 
@@ -13,6 +14,9 @@ export default function Home() {
       <BeforeAfterSection />
       <Suspense fallback={<FeaturedProductSkeleton />}>
         <FeaturedProduct />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FeaturedProducts />
       </Suspense>
       <HowItWorks />
       <BenefitsSection />

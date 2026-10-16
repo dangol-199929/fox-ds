@@ -32,7 +32,7 @@ export function ProductImage({
         )}
       >
         <CablePlaceholderArt />
-        <span className="relative rounded-full bg-background/90 px-3 py-1 text-eyebrow font-medium uppercase">
+        <span className="absolute bottom-3 left-3 rounded-full bg-background/90 px-3 py-1 text-eyebrow font-medium uppercase">
           {placeholderLabel}
         </span>
       </div>

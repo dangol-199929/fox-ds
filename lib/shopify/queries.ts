@@ -278,3 +278,56 @@ export const SHOP_POLICIES_QUERY = /* GraphQL */ `
     }
   }
 `;
+
+export const SEARCH_PRODUCTS_QUERY = /* GraphQL */ `
+  query SearchProducts(
+    $query: String!
+    $first: Int!
+    $sortKey: SearchSortKeys
+    $reverse: Boolean
+    $productFilters: [ProductFilter!]
+    $country: CountryCode!
+  ) @inContext(country: $country) {
+    search(
+      query: $query
+      first: $first
+      types: PRODUCT
+      sortKey: $sortKey
+      reverse: $reverse
+      productFilters: $productFilters
+      unavailableProducts: LAST
+    ) {
+      totalCount
+      productFilters {
+        id
+        label
+        type
+        values {
+          id
+          label
+          count
+          input
+        }
+      }
+      nodes {
+        ... on Product {
+          ...ProductFields
+        }
+      }
+    }
+  }
+  ${PRODUCT_FIELDS}
+`;
+
+export const PRODUCT_RECOMMENDATIONS_QUERY = /* GraphQL */ `
+  query ProductRecommendations(
+    $handle: String!
+    $intent: ProductRecommendationIntent!
+    $country: CountryCode!
+  ) @inContext(country: $country) {
+    productRecommendations(productHandle: $handle, intent: $intent) {
+      ...ProductFields
+    }
+  }
+  ${PRODUCT_FIELDS}
+`;
