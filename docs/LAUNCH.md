@@ -17,7 +17,7 @@
 
 ## 3. Deploy to Vercel
 
-Current development deployment: Vercel project **fox-ds** (Hobby) at `https://fox-ds.vercel.app`, deploying from `main`.
+Current development deployment: Vercel project **fox-ds** (Hobby) at `https://fox-ds.vercel.app`, deploying from `main`. Webhooks (product create/update/delete, inventory level update, collection update) and the Customer Account API redirect URLs already point at this address. Update both when the custom domain is connected.
 
 The free **Hobby** plan is fine for development and testing (what we use now). Vercel's terms limit Hobby to personal, non-commercial use, so **move to Pro (US$20/month) before taking real orders**, or switch to Cloudflare Workers via OpenNext (extra setup).
 
