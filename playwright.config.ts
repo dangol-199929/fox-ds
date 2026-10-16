@@ -23,9 +23,9 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"], channel: "chrome" } },
   ],
   webServer: {
-    command: `node_modules/.bin/next dev --port ${PORT}`,
+    command: `node_modules/.bin/next build && node_modules/.bin/next start --port ${PORT}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 300_000,
   },
 });

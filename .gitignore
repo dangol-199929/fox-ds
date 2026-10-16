@@ -28,3 +28,6 @@ next-env.d.ts
 *.pem
 npm-debug.log*
 pnpm-debug.log*
+
+# local Claude preview config
+/.claude/

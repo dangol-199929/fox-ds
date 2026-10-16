@@ -250,3 +250,31 @@ export const CART_LINES_REMOVE_MUTATION = /* GraphQL */ `
   }
   ${CART_FIELDS}
 `;
+
+export const SHOP_POLICIES_QUERY = /* GraphQL */ `
+  query ShopPolicies {
+    shop {
+      name
+      privacyPolicy {
+        title
+        body
+        handle
+      }
+      refundPolicy {
+        title
+        body
+        handle
+      }
+      shippingPolicy {
+        title
+        body
+        handle
+      }
+      termsOfService {
+        title
+        body
+        handle
+      }
+    }
+  }
+`;
