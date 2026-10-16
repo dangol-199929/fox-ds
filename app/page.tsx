@@ -6,6 +6,7 @@ import { FeaturedProduct, FeaturedProductSkeleton } from "@/components/home/feat
 import { FeaturedProducts } from "@/components/home/featured-products";
 import { HeroSection } from "@/components/home/hero-section";
 import { HowItWorks } from "@/components/home/how-it-works";
+import { NewsletterSection } from "@/components/newsletter/newsletter-section";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
           <FAQAccordion headingId="faq-heading" />
         </div>
       </section>
+      <NewsletterSection />
     </main>
   );
 }

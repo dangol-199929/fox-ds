@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NewsletterSignup } from "@/components/newsletter/newsletter-signup";
 import { policyNav, siteConfig } from "@/lib/site";
 import { Wordmark } from "./wordmark";
 
@@ -16,6 +17,10 @@ export function SiteFooter() {
           <p className="max-w-xs text-sm text-muted-foreground">
             A simple kit for tidier cables and a calmer desk. Australian store, prices in AUD.
           </p>
+          <div className="max-w-sm pt-4">
+            <h2 className="mb-3 text-eyebrow font-medium uppercase text-muted-foreground">Newsletter</h2>
+            <NewsletterSignup variant="compact" />
+          </div>
         </div>
         <nav aria-label="Shop">
           <h2 className="text-eyebrow font-medium uppercase text-muted-foreground">Shop</h2>
