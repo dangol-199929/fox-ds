@@ -6,6 +6,7 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { getCurrentCart } from "@/lib/shopify/current-cart";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,12 +20,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl(),
   title: {
     default: "Clean Desk Kit · Tidy cables, calmer desk",
     template: "%s · Clean Desk Kit",
   },
   description:
     "A simple cable-management kit for a tidier, more intentional desk. Australian store, prices in AUD.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+    siteName: "Clean Desk Kit",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

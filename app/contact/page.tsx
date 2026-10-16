@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description: "Get in touch with Clean Desk Kit about orders, shipping or returns.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

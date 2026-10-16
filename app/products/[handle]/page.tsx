@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { FAQAccordion } from "@/components/home/faq-accordion";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { PurchasePanel } from "@/components/product/purchase-panel";
+import { ProductJsonLd } from "@/components/product/product-json-ld";
 import { RecommendedProducts } from "@/components/product/recommended-products";
 import { TO_CONFIRM } from "@/lib/content";
 import { getProduct, getProducts } from "@/lib/shopify/products";
@@ -25,9 +26,20 @@ export async function generateMetadata({
   const { handle } = await params;
   const product = await getProduct(handle).catch(() => null);
   if (!product) return { title: "Product not found" };
+  const description = product.seo.description || product.description.slice(0, 160) || undefined;
+  const image = product.featuredImage;
   return {
-    title: product.seo.title || product.title,
-    description: product.seo.description || product.description.slice(0, 160) || undefined,
+    title: product.seo.title && product.seo.title !== product.title ? product.seo.title : product.title,
+    description,
+    alternates: { canonical: `/products/${product.handle}` },
+    openGraph: {
+      title: product.title,
+      description,
+      url: `/products/${product.handle}`,
+      ...(image && {
+        images: [{ url: image.url, width: image.width ?? undefined, height: image.height ?? undefined, alt: image.altText ?? product.title }],
+      }),
+    },
   };
 }
 
@@ -38,6 +50,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
 
   return (
     <main className="pb-28 md:pb-0">
+      <ProductJsonLd product={product} />
       <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 pt-6 sm:px-8">
         <ol className="flex gap-2 text-sm text-muted-foreground">
           <li>
