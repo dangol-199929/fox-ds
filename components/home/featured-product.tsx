@@ -32,7 +32,7 @@ export async function FeaturedProduct() {
   return (
     <FeaturedShell>
       <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:gap-20">
-        <Link href={`/products/${product.handle}`} aria-label={`View ${product.title} details`} className="group block">
+        <Link href={`/products/${product.handle}`} className="group block">
           <ProductImage
             image={product.featuredImage}
             alt={product.title}
