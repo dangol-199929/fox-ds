@@ -1,0 +1,127 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Clean Desk Kit design tokens.
+ *
+ * Contrast (WCAG 2.2) measured against --background #F7F6F2:
+ *   foreground #20211F   14.9:1   body text, headings
+ *   muted-fg   #5C5E58    6.1:1   secondary text (5.6:1 on --secondary)
+ *   input      #8A8C84    3.2:1   form-field borders (non-text 3:1 minimum)
+ *   lime       #C8F169    1.2:1   NEVER used for text or focus on light
+ *                                 surfaces; only as a fill behind charcoal
+ *                                 text (12.5:1) or on charcoal surfaces.
+ * Focus rings are charcoal for that reason.
+ *
+ * The site is light-only by design, so shadcn's .dark tokens are omitted.
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-lime: var(--lime);
+  --color-lime-foreground: var(--lime-foreground);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Fluid, oversized editorial type. 320px → 1440px viewports. */
+  --text-display: clamp(2.75rem, 1.6rem + 5.75vw, 6.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.04em;
+  --text-headline: clamp(2rem, 1.4rem + 3vw, 4rem);
+  --text-headline--line-height: 1;
+  --text-headline--letter-spacing: -0.03em;
+  --text-title: clamp(1.5rem, 1.25rem + 1.1vw, 2.25rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.02em;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1rem;
+  --text-eyebrow--letter-spacing: 0.12em;
+
+  /* Crisp, mostly square geometry; pills are reserved for buttons and chips. */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
+}
+
+:root {
+  --background: #f7f6f2;
+  --foreground: #20211f;
+  --card: #f7f6f2;
+  --card-foreground: #20211f;
+  --popover: #fbfaf7;
+  --popover-foreground: #20211f;
+  --primary: #20211f;
+  --primary-foreground: #f7f6f2;
+  --secondary: #ecede7;
+  --secondary-foreground: #20211f;
+  --muted: #ecede7;
+  --muted-foreground: #5c5e58;
+  --accent: #ecede7;
+  --accent-foreground: #20211f;
+  --destructive: #b42318;
+  --success: #3a6b12;
+  --border: #dcddd5;
+  --input: #8a8c84;
+  --ring: #20211f;
+  --lime: #c8f169;
+  --lime-foreground: #20211f;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--lime);
+    color: var(--lime-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
