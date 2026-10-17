@@ -7,7 +7,7 @@
 - [ ] Write the policies (Settings → Policies): refund, shipping, terms. The site shows them automatically. Get advice on your obligations under Australian Consumer Law.
 - [ ] Shipping profile for Australia with real rates; delivery times only from measured sample orders. **If you change the rate or the free-shipping threshold, update `shippingConfig` in `lib/site.ts` too.** The announcement bar, home page, product pages and cart meter quote it (currently A$7.25 flat, free over A$60); Shopify checkout always charges the real rate.
 - [ ] Every product has a **Type** in Shopify admin that matches a category in `lib/site.ts` (Cable management, Stands & risers, Desk mats, Lighting, Desk accessories). That's what puts it in a category; empty categories hide themselves.
-- [ ] Replace supplier photos that show other brands' logos or marketing text (e.g. the light bar's "HOMEFISH" banner, the riser's "Retractable Booster Computer Stand").
+- [x] Supplier photos with logos or marketing text were cropped or detached (17 Oct 2026). Detached photos are kept in Shopify under Content → Files. Check new products' photos the same way, and only show colours and models you actually sell.
 - [ ] Taxes: decide whether prices include GST (Settings → Taxes and duties) and register for GST if required.
 - [ ] Product: real photos with alt text, final description, kit contents, specifications. Then remove the "To be confirmed" placeholders in `lib/content.ts` and the product page.
 
