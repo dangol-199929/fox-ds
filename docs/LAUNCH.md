@@ -4,7 +4,7 @@
 - [ ] Rename the store from "My Store" to **Clean Desk Kit** (Settings → General). The name appears in checkout, emails and product data.
 - [ ] Pick a paid plan. Basic is **A$56/month** (A$42/month billed yearly) and includes one headless storefront. Prices checked 16 Oct 2026 at shopify.com/au/pricing.
 - [ ] Remove the storefront password (Online Store → Preferences). Shopify only allows this on a paid plan.
-- [ ] Write the policies (Settings → Policies): refund, shipping, terms. The site shows them automatically. Get advice on your obligations under Australian Consumer Law.
+- [ ] Publish the policies (Settings → Policies): shipping, refund, privacy, terms. Drafts are in [docs/policies](policies/README.md): fill in the placeholders, make the two refund decisions, and have them checked before relying on them. The site shows them automatically.
 - [ ] Shipping profile for Australia with real rates; delivery times only from measured sample orders. **If you change the rate or the free-shipping threshold, update `shippingConfig` in `lib/site.ts` too.** The announcement bar, home page, product pages and cart meter quote it (currently A$7.25 flat, free over A$60); Shopify checkout always charges the real rate.
 - [ ] Every product has a **Type** in Shopify admin that matches a category in `lib/site.ts` (Cable management, Stands & risers, Desk mats, Lighting, Desk accessories). That's what puts it in a category; empty categories hide themselves.
 - [x] Supplier photos with logos or marketing text were cropped or detached (17 Oct 2026). Detached photos are kept in Shopify under Content → Files. Check new products' photos the same way, and only show colours and models you actually sell.
