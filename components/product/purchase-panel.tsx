@@ -104,7 +104,7 @@ export function PurchasePanel({
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-3">
-        <Title className="text-headline font-semibold">{product.title}</Title>
+        <Title className="text-title font-semibold text-balance">{product.title}</Title>
         <p className="flex flex-wrap items-baseline gap-3 text-2xl font-medium tabular-nums">
           <span>{formatMoney(price)}</span>
           {onSale && (

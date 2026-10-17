@@ -21,7 +21,7 @@ export function ProductGallery({ images, title }: { images: ShopifyImage[]; titl
         alt={title}
         priority
         sizes="(min-width: 1024px) 55vw, 100vw"
-        className="aspect-[4/5] w-full rounded-lg sm:aspect-square"
+        className="aspect-square w-full rounded-lg"
       />
       {images.length > 1 && (
         <ul className="flex gap-2 overflow-x-auto pb-1" aria-label="Product images">

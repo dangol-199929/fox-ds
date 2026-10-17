@@ -49,7 +49,7 @@ export function ShopControls({ groups, params, resultCount, showFilters, showSor
         <p className="text-muted-foreground" role="status" aria-live="polite">
           {isPending ? "Updating…" : `${resultCount} ${resultCount === 1 ? "product" : "products"}`}
         </p>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {showFilters && (
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger render={<Button variant="outline" className="lg:hidden" />}>

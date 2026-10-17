@@ -22,11 +22,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: siteUrl(),
   title: {
-    default: "Clean Desk Kit · Tidy cables, calmer desk",
+    default: "Clean Desk Kit · Desk accessories & cable management",
     template: "%s · Clean Desk Kit",
   },
   description:
-    "A simple cable-management kit for a tidier, more intentional desk. Australian store, prices in AUD.",
+    "Cable management, laptop stands, desk mats and lighting for a tidier, calmer desk. Australian store, prices in AUD.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

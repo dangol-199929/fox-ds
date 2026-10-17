@@ -1,7 +1,7 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { shopifyFetch } from "./client";
-import { getCollectionProducts, isValidHandle, PRODUCTS_TAG } from "./products";
+import { getCollectionProducts, getProducts, isValidHandle, PRODUCTS_TAG } from "./products";
 import { PRODUCT_RECOMMENDATIONS_QUERY, STORE_COUNTRY } from "./queries";
 import { type RawProduct, reshapeProduct } from "./reshape";
 import type { Product } from "./types";
@@ -10,7 +10,7 @@ import type { Product } from "./types";
  * Recommendations for a product page, in priority order:
  *   1. Shopify's complementary products (set up in the Search & Discovery app)
  *   2. Shopify's related products (Shopify's own algorithm)
- *   3. The featured collection, as a fallback
+ *   3. The featured collection, then the rest of the catalogue, as fallbacks
  * The current product, duplicates and unavailable products are removed.
  * Nothing here tracks or profiles visitors.
  */
@@ -47,6 +47,10 @@ export async function getRecommendedProducts(
   if (candidates.length < limit) {
     const featured = await getCollectionProducts(fallbackCollection, 12).catch(() => null);
     candidates = [...candidates, ...(featured?.products ?? [])];
+  }
+  if (pickRecommendations(candidates, handle, limit).length < limit) {
+    const all = await getProducts({ first: 24 }).catch(() => []);
+    candidates = [...candidates, ...all];
   }
 
   return pickRecommendations(candidates, handle, limit);

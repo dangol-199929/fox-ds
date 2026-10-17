@@ -5,7 +5,9 @@
 - [ ] Pick a paid plan. Basic is **A$56/month** (A$42/month billed yearly) and includes one headless storefront. Prices checked 16 Oct 2026 at shopify.com/au/pricing.
 - [ ] Remove the storefront password (Online Store → Preferences). Shopify only allows this on a paid plan.
 - [ ] Write the policies (Settings → Policies): refund, shipping, terms. The site shows them automatically. Get advice on your obligations under Australian Consumer Law.
-- [ ] Shipping profile for Australia with real rates; delivery times only from measured sample orders.
+- [ ] Shipping profile for Australia with real rates; delivery times only from measured sample orders. **If you change the rate or the free-shipping threshold, update `shippingConfig` in `lib/site.ts` too.** The announcement bar, home page, product pages and cart meter quote it (currently A$7.25 flat, free over A$60); Shopify checkout always charges the real rate.
+- [ ] Every product has a **Type** in Shopify admin that matches a category in `lib/site.ts` (Cable management, Stands & risers, Desk mats, Lighting, Desk accessories). That's what puts it in a category; empty categories hide themselves.
+- [ ] Replace supplier photos that show other brands' logos or marketing text (e.g. the light bar's "HOMEFISH" banner, the riser's "Retractable Booster Computer Stand").
 - [ ] Taxes: decide whether prices include GST (Settings → Taxes and duties) and register for GST if required.
 - [ ] Product: real photos with alt text, final description, kit contents, specifications. Then remove the "To be confirmed" placeholders in `lib/content.ts` and the product page.
 
@@ -79,10 +81,12 @@ Shopify admin → Settings → Notifications → Webhooks → create, for each t
 | Shopify Email | free monthly allowance, then paid |
 
 ## Known limitations
-- **Placeholders:** the product has no photos yet. Kit contents, specifications, shipping times and the refund policy are marked "To be confirmed" until supplied.
+- **Photos:** products use the supplier's photos until you upload your own. A product with no photo at all shows a labelled placeholder.
+- **Placeholders:** kit contents, specifications, shipping times and the refund policy are marked "To be confirmed" until supplied.
 - **Rate limits:** newsletter rate limiting and webhook de-duplication are in memory, per server instance. They're adequate for launch traffic and documented in code. Use a shared store such as Upstash Redis if you need hard limits.
 - **Storefront token:** the public Storefront token is used from the server. Shopify recommends a private token plus the buyer's IP for server-side calls at scale. Consider switching before high traffic.
-- **Recommendations:** "Pairs well with" and "More for your desk" stay hidden until you have more than one product.
-- **Filters:** shop filters appear once there are 4+ products. Extra filter types come from Shopify's Search & Discovery app.
+- **Recommendations:** "You might also like" uses Shopify's recommendations, then falls back to other products in the catalogue.
+- **Filters:** shop filters appear once there are 4+ products. Extra filter types come from Shopify's Search & Discovery app. Categories use Shopify's `product_type:` search syntax, so they work without Search & Discovery set-up.
+- **Search:** Shopify's storefront search is fuzzy (a search for "stand" also matches related products). Category pages share the `/shop` canonical URL for now.
 - **Cart recommendations:** the cart drawer doesn't show recommendations, to keep it fast.
 - **Order emails:** the order confirmation email doesn't include a newsletter opt-in. Shopify's own checkout has an optional "Email me with news and offers" box.

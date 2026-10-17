@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Clean Desk Kit: your desk deserves better.";
+export const alt = "Clean Desk Kit: everything for a calmer desk.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,10 +26,10 @@ export default function OpengraphImage() {
           clean/desk
         </div>
         <div style={{ display: "flex", fontSize: 104, fontWeight: 700, letterSpacing: -4, lineHeight: 1 }}>
-          Your desk deserves better.
+          Everything for a calmer desk.
         </div>
         <div style={{ display: "flex", fontSize: 34, color: "#5c5e58" }}>
-          One simple kit to tame cable chaos. Australian store.
+          Cable management and desk accessories. Australian store.
         </div>
       </div>
     ),

@@ -38,37 +38,3 @@ export const faqs: FaqItem[] = [
     confirmed: false,
   },
 ];
-
-export const howItWorks = [
-  {
-    title: "Unbox your kit",
-    body: "Everything you need for a tidier desk arrives together in one box.",
-  },
-  {
-    title: "Organise your cables",
-    body: "Route, bundle and tuck cables out of sight, at your own pace.",
-  },
-  {
-    title: "Enjoy your cleaner workspace",
-    body: "Sit down to a desk that feels calmer and more put together.",
-  },
-] as const;
-
-export const benefits = [
-  {
-    title: "A more organised desk",
-    body: "Give every cable a place, so your desk surface is for working, not wiring.",
-  },
-  {
-    title: "Less visible cable clutter",
-    body: "Bundle and route cords out of sight for a cleaner look from your chair.",
-  },
-  {
-    title: "A simple setup",
-    body: "Tidy one cable at a time, at your own pace. Full instructions will come with the final kit.",
-  },
-  {
-    title: "A workspace that feels intentional",
-    body: "Small changes that make the space you spend hours in feel considered.",
-  },
-] as const;

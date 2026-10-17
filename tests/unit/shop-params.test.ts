@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { activeFilterCount, parseShopParams, shopHref, toProductFilters } from "@/lib/shop-params";
+import { activeFilterCount, parseShopParams, searchQuery, shopHref, toProductFilters } from "@/lib/shop-params";
 import type { FilterGroup } from "@/lib/shopify/search-options";
 
 const groups: FilterGroup[] = [
@@ -30,7 +30,14 @@ const groups: FilterGroup[] = [
 
 describe("parseShopParams", () => {
   it("defaults to featured with no filters", () => {
-    expect(parseShopParams({})).toEqual({ sort: "featured", filterIds: [], minPrice: null, maxPrice: null });
+    expect(parseShopParams({})).toEqual({
+      q: null,
+      category: null,
+      sort: "featured",
+      filterIds: [],
+      minPrice: null,
+      maxPrice: null,
+    });
   });
 
   it("reads sort, repeated filters and a price range", () => {
@@ -42,6 +49,8 @@ describe("parseShopParams", () => {
         max: "40.5",
       }),
     ).toEqual({
+      q: null,
+      category: null,
       sort: "price-desc",
       filterIds: ["filter.v.availability.1", "filter.p.product_type.Clips"],
       minPrice: 10,
@@ -64,6 +73,35 @@ describe("parseShopParams", () => {
     expect(parseShopParams({ min: "-5", max: "abc" })).toMatchObject({ minPrice: null, maxPrice: null });
     expect(parseShopParams({ max: "1e9" }).maxPrice).toBeNull();
     expect(parseShopParams({ min: "50", max: "10" })).toMatchObject({ minPrice: 10, maxPrice: 50 });
+  });
+});
+
+describe("search and category", () => {
+  it("trims, collapses and length-limits the search query", () => {
+    expect(parseShopParams({ q: "  laptop   stand " }).q).toBe("laptop stand");
+    expect(parseShopParams({ q: "   " }).q).toBeNull();
+    expect(parseShopParams({ q: "x".repeat(500) }).q).toHaveLength(100);
+  });
+
+  it("only accepts known category slugs", () => {
+    expect(parseShopParams({ category: "desk-mats" }).category).toBe("desk-mats");
+    expect(parseShopParams({ category: "secret-stuff" }).category).toBeNull();
+    expect(parseShopParams({ category: ["lighting", "desk-mats"] }).category).toBe("lighting");
+  });
+
+  it("turns a category into Shopify's product_type search syntax", () => {
+    expect(searchQuery(parseShopParams({}))).toBe("");
+    expect(searchQuery(parseShopParams({ q: "stand" }))).toBe("stand");
+    expect(searchQuery(parseShopParams({ category: "stands-risers" }))).toBe('product_type:"Stands & risers"');
+    expect(searchQuery(parseShopParams({ q: "black", category: "desk-mats" }))).toBe('black product_type:"Desk mats"');
+  });
+
+  it("keeps search and category in links, but not in the sidebar filter count", () => {
+    const params = parseShopParams({ q: "mat", category: "desk-mats", sort: "price-asc" });
+    const href = shopHref(params);
+    expect(href).toBe("/shop?q=mat&category=desk-mats&sort=price-asc");
+    expect(parseShopParams(Object.fromEntries(new URL(href, "http://x").searchParams))).toEqual(params);
+    expect(activeFilterCount(params)).toBe(0);
   });
 });
 

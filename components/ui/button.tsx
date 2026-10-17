@@ -6,7 +6,7 @@ import { cn } from "cn"
 // The lime fill is reserved for primary calls to action and always carries
 // charcoal text plus a charcoal edge, because lime alone has ~1.2:1 contrast
 // against the off-white background.
-const buttonVariants = cva(
+const baseButtonVariants = cva(
   "group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent text-sm font-medium whitespace-nowrap transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-out outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
@@ -42,12 +42,16 @@ const buttonVariants = cva(
   }
 )
 
+// Run through cn() so a variant's border colour overrides the base
+// border-transparent even when buttonVariants styles a plain <Link>.
+const buttonVariants = (...args: Parameters<typeof baseButtonVariants>) => cn(baseButtonVariants(...args))
+
 function Button({
   className,
   variant = "default",
   size = "default",
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonPrimitive.Props & VariantProps<typeof baseButtonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"

@@ -11,15 +11,14 @@ export function QuickAdd({ variantId, title }: { variantId: string; title: strin
 
   return (
     <Button
-      variant="outline"
       size="sm"
-      className="relative z-10 bg-background"
+      className="relative z-10 w-full"
       onClick={() => add(variantId, 1, title)}
       disabled={isPending}
       aria-label={`Add ${title} to cart`}
     >
       {adding ? <Loader2Icon className="animate-spin" aria-hidden="true" /> : <PlusIcon aria-hidden="true" />}
-      Add
+      Add to cart
     </Button>
   );
 }

@@ -21,9 +21,12 @@ const PAGE_SIZE = 48;
  * combination of inputs.
  */
 export async function searchProducts({
+  query = "",
   sort = "featured",
   productFilters = [],
 }: {
+  /** Free-text search; empty lists everything. */
+  query?: string;
   sort?: SortValue;
   /** Parsed Shopify ProductFilter inputs; build them with parseShopParams. */
   productFilters?: Record<string, unknown>[];
@@ -42,7 +45,7 @@ export async function searchProducts({
   }>({
     query: SEARCH_PRODUCTS_QUERY,
     variables: {
-      query: "",
+      query: query.slice(0, 100),
       first: PAGE_SIZE,
       sortKey: option.sortKey,
       reverse: option.reverse,

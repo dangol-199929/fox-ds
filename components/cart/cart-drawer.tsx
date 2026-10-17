@@ -15,6 +15,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { formatMoney } from "@/lib/format";
+import { shippingConfig } from "@/lib/site";
 import type { Cart, CartLine } from "@/lib/shopify/types";
 import { useCart, useCartActions } from "./cart-context";
 
@@ -83,10 +84,10 @@ function EmptyCart({ onContinue }: { onContinue: () => void }) {
       </span>
       <div className="space-y-1">
         <p className="text-lg font-medium">Your cart is empty</p>
-        <p className="text-muted-foreground">A tidier desk is one kit away.</p>
+        <p className="text-muted-foreground">Find something for your desk.</p>
       </div>
       <Link href="/shop" className={buttonVariants()} onClick={onContinue}>
-        Shop the kit
+        Start shopping
       </Link>
     </div>
   );
@@ -98,6 +99,7 @@ function FilledCart({ cart }: { cart: Cart }) {
 
   return (
     <>
+      <FreeShippingMeter subtotal={Number(cart.cost.subtotalAmount.amount)} currencyCode={cart.cost.subtotalAmount.currencyCode} />
       <ul className="flex-1 divide-y divide-border overflow-y-auto px-5" aria-label="Items in your cart">
         {cart.lines.map((line) => (
           <CartLineItem key={line.id} line={line} />
@@ -125,6 +127,38 @@ function FilledCart({ cart }: { cart: Cart }) {
         </Button>
       </SheetFooter>
     </>
+  );
+}
+
+/**
+ * Progress towards free shipping, from the rate mirrored in shippingConfig.
+ * Shopify checkout applies the real rate; this is a guide only.
+ */
+function FreeShippingMeter({ subtotal, currencyCode }: { subtotal: number; currencyCode: string }) {
+  if (!shippingConfig) return null;
+  const { freeOver } = shippingConfig;
+  const remaining = Math.max(freeOver - subtotal, 0);
+  const progress = Math.min(subtotal / freeOver, 1);
+
+  return (
+    <div className="border-b border-border px-5 py-4">
+      <p className="text-sm" role="status">
+        {remaining > 0 ? (
+          <>
+            Add <strong className="tabular-nums">{formatMoney({ amount: remaining.toFixed(2), currencyCode })}</strong> more for
+            free shipping.
+          </>
+        ) : (
+          <strong>You qualify for free standard shipping.</strong>
+        )}
+      </p>
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary" aria-hidden="true">
+        <div
+          className="h-full rounded-full bg-lime transition-[width] duration-500"
+          style={{ width: `${Math.round(progress * 100)}%` }}
+        />
+      </div>
+    </div>
   );
 }
 

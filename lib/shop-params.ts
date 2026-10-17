@@ -1,15 +1,21 @@
 import { z } from "zod";
+import { categoryBySlug } from "@/lib/site";
 import { SORT_OPTIONS, type FilterGroup, type SortValue } from "@/lib/shopify/search-options";
 
 /**
- * Shop URL state, e.g. /shop?sort=price-asc&filter=filter.v.availability.1&min=10&max=40
+ * Shop URL state, e.g.
+ *   /shop?q=stand&category=desk-mats&sort=price-asc&filter=filter.v.availability.1&min=10&max=40
  *
+ * Categories are our own slugs (lib/site.ts) mapped to Shopify product types;
+ * unknown slugs are ignored. The search query is trimmed and length-limited.
  * Filter values are referenced by Shopify's own value ids and translated back
  * to Shopify's filter input on the server, so a visitor can't inject arbitrary
  * filter JSON through the URL. Unknown ids and malformed numbers are dropped.
  */
 
 export type ShopParams = {
+  q: string | null;
+  category: string | null;
   sort: SortValue;
   filterIds: string[];
   minPrice: number | null;
@@ -19,6 +25,7 @@ export type ShopParams = {
 type RawSearchParams = Record<string, string | string[] | undefined>;
 
 const FILTER_ID = /^filter\.[a-z]\.[A-Za-z0-9._-]{1,200}$/;
+const MAX_QUERY_LENGTH = 100;
 const price = z.coerce.number().finite().min(0).max(100_000);
 
 function list(value: string | string[] | undefined): string[] {
@@ -40,7 +47,11 @@ export function parseShopParams(params: RawSearchParams): ShopParams {
     [minPrice, maxPrice] = [maxPrice, minPrice];
   }
 
-  return { sort, filterIds, minPrice, maxPrice };
+  const qRaw = (list(params.q)[0] ?? "").replace(/\s+/g, " ").trim().slice(0, MAX_QUERY_LENGTH);
+  const q = qRaw || null;
+  const category = categoryBySlug(list(params.category)[0])?.slug ?? null;
+
+  return { q, category, sort, filterIds, minPrice, maxPrice };
 }
 
 /**
@@ -76,9 +87,23 @@ export function toProductFilters(params: ShopParams, groups: FilterGroup[]): Rec
   return filters;
 }
 
+/**
+ * Shopify search text for the current state. Categories use Shopify's
+ * product_type: search syntax, because the search API only honours
+ * productType *filters* once they're enabled in the Search & Discovery app.
+ */
+export function searchQuery(params: ShopParams): string {
+  const category = categoryBySlug(params.category);
+  const parts = [params.q ?? ""];
+  if (category) parts.push(`product_type:"${category.productType}"`);
+  return parts.filter(Boolean).join(" ");
+}
+
 /** Builds a /shop URL from state, omitting defaults to keep links short. */
 export function shopHref(params: ShopParams): string {
   const search = new URLSearchParams();
+  if (params.q) search.set("q", params.q);
+  if (params.category) search.set("category", params.category);
   if (params.sort !== "featured") search.set("sort", params.sort);
   for (const id of params.filterIds) search.append("filter", id);
   if (params.minPrice !== null) search.set("min", String(params.minPrice));
@@ -87,6 +112,7 @@ export function shopHref(params: ShopParams): string {
   return qs ? `/shop?${qs}` : "/shop";
 }
 
+/** Counts sidebar filters (availability, price). Category and search are shown separately. */
 export function activeFilterCount(params: ShopParams): number {
   return params.filterIds.length + (params.minPrice !== null || params.maxPrice !== null ? 1 : 0);
 }

@@ -1,26 +1,40 @@
 import type { Product } from "@/lib/shopify/types";
+import { cn } from "@/lib/utils";
 import { ProductCard } from "./product-card";
 
-export function ProductGrid({ products }: { products: Product[] }) {
+const GRID = "grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-3";
+
+export function ProductGrid({
+  products,
+  headingLevel = "h2",
+  className = "xl:grid-cols-4",
+}: {
+  products: Product[];
+  headingLevel?: "h2" | "h3";
+  /** Extra column rules, e.g. "lg:grid-cols-4" where there's no sidebar. */
+  className?: string;
+}) {
   return (
-    <ul className="grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
+    <ul className={cn(GRID, className)}>
       {products.map((product, i) => (
         <li key={product.id}>
-          <ProductCard product={product} priority={i < 3} />
+          <ProductCard product={product} priority={i < 4} headingLevel={headingLevel} />
         </li>
       ))}
     </ul>
   );
 }
 
-export function ProductGridSkeleton() {
+export function ProductGridSkeleton({ count = 8, className = "xl:grid-cols-4" }: { count?: number; className?: string }) {
   return (
     <div aria-busy="true">
-      <ul className="grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-3" aria-hidden="true">
-        {[0, 1, 2].map((i) => (
-          <li key={i} className="space-y-4">
-            <div className="aspect-[4/5] animate-pulse rounded-lg bg-secondary" />
-            <div className="h-5 w-2/3 animate-pulse rounded bg-secondary" />
+      <ul className={cn(GRID, className)} aria-hidden="true">
+        {Array.from({ length: count }, (_, i) => (
+          <li key={i} className="space-y-3">
+            <div className="aspect-square animate-pulse rounded-lg bg-secondary" />
+            <div className="h-3 w-1/3 animate-pulse rounded bg-secondary" />
+            <div className="h-4 w-2/3 animate-pulse rounded bg-secondary" />
+            <div className="h-4 w-1/4 animate-pulse rounded bg-secondary" />
           </li>
         ))}
       </ul>

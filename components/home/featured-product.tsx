@@ -49,7 +49,7 @@ export async function FeaturedProduct() {
             href={`/products/${product.handle}`}
             className="self-start text-sm font-medium underline underline-offset-4"
           >
-            Full details, what&apos;s included and FAQ
+            Full product details
           </Link>
         </div>
       </div>
@@ -59,11 +59,11 @@ export async function FeaturedProduct() {
 
 function FeaturedShell({ children }: { children: React.ReactNode }) {
   return (
-    <section id="shop" aria-labelledby="featured-heading" className="scroll-mt-20">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8 lg:py-24">
+    <section id="kit" aria-labelledby="featured-heading" className="scroll-mt-32 border-t border-foreground/10 bg-secondary/60">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-8 lg:py-20">
         <p className="mb-8 flex items-center gap-2 text-eyebrow font-medium uppercase text-muted-foreground">
-          <span className="rounded-full bg-lime px-2 py-0.5 text-lime-foreground">02</span>
-          <span id="featured-heading">The kit</span>
+          <span className="rounded-full bg-lime px-2 py-0.5 text-lime-foreground">Bundle</span>
+          <span id="featured-heading">Our signature kit</span>
         </p>
         {children}
       </div>
