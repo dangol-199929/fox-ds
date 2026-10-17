@@ -15,7 +15,7 @@ export function QuickAdd({ variantId, title }: { variantId: string; title: strin
       className="relative z-10 w-full"
       onClick={() => add(variantId, 1, title)}
       disabled={isPending}
-      aria-label={`Add ${title} to cart`}
+      aria-label={`Add to cart: ${title}`}
     >
       {adding ? <Loader2Icon className="animate-spin" aria-hidden="true" /> : <PlusIcon aria-hidden="true" />}
       Add to cart

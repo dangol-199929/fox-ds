@@ -2,6 +2,12 @@
 // business is marked TO_CONFIRM and shown as a visible placeholder rather
 // than an invented promise.
 
+import { shippingConfig } from "@/lib/site";
+
+const shippingCost = shippingConfig
+  ? `Shipping within Australia is a flat $${shippingConfig.flatRate.toFixed(2)}, or free on orders over $${shippingConfig.freeOver}. `
+  : "Shipping costs are shown at checkout. ";
+
 export const TO_CONFIRM = "To be confirmed";
 
 export type FaqItem = { question: string; answer: string; confirmed: boolean };
@@ -10,25 +16,26 @@ export const faqs: FaqItem[] = [
   {
     question: "What comes in the kit?",
     answer:
-      "The final kit contents are being confirmed with our supplier. The product page will list every item once samples have been checked.",
-    confirmed: false,
+      "20 black self-adhesive hook-and-loop cable straps. Each strap is about 90 mm long and 20 mm wide. These details come from our supplier, and we'll confirm them when our own sample arrives.",
+    confirmed: true,
   },
   {
     question: "Is it compatible with my desk setup?",
     answer:
-      "Compatibility details (desk thickness, cable sizes and mounting surfaces) will be published after the kit contents are confirmed.",
-    confirmed: false,
+      "The straps stick to clean, dry, smooth surfaces, like the back or underside of most desks, and each one wraps a few cables at a time. Textured, dusty or delicate surfaces may not hold, and the adhesive may mark some finishes, so try one on a hidden spot first.",
+    confirmed: true,
   },
   {
-    question: "How do I install the products?",
+    question: "How do I install the straps?",
     answer:
-      "Step-by-step setup instructions will be added once the final kit has been tested. If you get stuck, contact us and we'll help.",
-    confirmed: false,
+      "Clean and dry the spot, peel off the backing, press the pad down firmly, then wrap the strap around your cables. Open and re-close the strap whenever you need to add or move a cable.",
+    confirmed: true,
   },
   {
-    question: "How long does shipping take?",
+    question: "How much is shipping, and how long does it take?",
     answer:
-      "Delivery times depend on our supplier and are being confirmed. See our shipping policy for the latest details before you order.",
+      shippingCost +
+      "Delivery times depend on our supplier and are being confirmed with test orders. See our shipping policy for the latest details before you order.",
     confirmed: false,
   },
   {

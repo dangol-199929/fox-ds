@@ -8,9 +8,15 @@ export function ProductGrid({
   products,
   headingLevel = "h2",
   className = "xl:grid-cols-4",
+  priorityCount = 0,
 }: {
   products: Product[];
   headingLevel?: "h2" | "h3";
+  /**
+   * Preload the first N photos. Only for grids at the top of the page;
+   * elsewhere it would compete with the page's main image.
+   */
+  priorityCount?: number;
   /** Extra column rules, e.g. "lg:grid-cols-4" where there's no sidebar. */
   className?: string;
 }) {
@@ -18,7 +24,7 @@ export function ProductGrid({
     <ul className={cn(GRID, className)}>
       {products.map((product, i) => (
         <li key={product.id}>
-          <ProductCard product={product} priority={i < 4} headingLevel={headingLevel} />
+          <ProductCard product={product} priority={i < priorityCount} headingLevel={headingLevel} />
         </li>
       ))}
     </ul>

@@ -174,7 +174,7 @@ async function ShopResults({ searchParams }: { searchParams: PageProps<"/shop">[
             />
           )}
           {result.products.length > 0 ? (
-            <ProductGrid products={result.products} />
+            <ProductGrid products={result.products} priorityCount={4} />
           ) : narrowed ? (
             <div className="flex flex-col items-start gap-4 py-16">
               <p className="text-xl font-medium">

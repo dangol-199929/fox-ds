@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { preconnect } from "react-dom";
 import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
@@ -44,6 +45,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   // Not awaited: the cart reads a cookie, so it streams in behind Suspense
   // boundaries in the header and drawer while the rest of the page is static.
   const cartPromise = getCurrentCart().catch(() => null);
+  // Product photos come from Shopify's CDN; open that connection early.
+  preconnect("https://cdn.shopify.com");
 
   return (
     <html lang="en-AU" className={`${geistSans.variable} ${geistMono.variable} h-full`}>

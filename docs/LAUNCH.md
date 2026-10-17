@@ -57,14 +57,16 @@ Shopify admin → Settings → Notifications → Webhooks → create, for each t
 
 ## 6. Final checks
 - [ ] `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm test:e2e` pass.
-- [ ] Re-run Lighthouse (mobile) on the deployed site. Local production build, 16 Oct 2026, Lighthouse 12 simulated mobile:
+- [ ] Re-run Lighthouse (mobile) on the deployed site. Local production build, 17 Oct 2026, Lighthouse 12 simulated mobile, after the multi-product redesign:
 
   | Page | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
   |---|---|---|---|---|---|---|---|
-  | Home | 95 | 100 | 100 | 100 | 2.9 s | 0 | 40 ms |
-  | Product | 95 | 100 | 100 | 100 | 2.9 s | 0 | 20 ms |
+  | Home | 98 | 100 | 100 | 100 | 2.4 s | 0 | 30 ms |
+  | Shop | 90 | 100 | 100 | 100 | 3.5 s | 0 | 10 ms |
+  | Product (kit) | 91 | 100 | 100 | 100 | 3.5 s | 0 | 30 ms |
+  | Product (desk mat) | 88–91 | 100 | 100 | 100 | 3.5–3.9 s | 0 | 10 ms |
 
-  LCP is just over the 2.5 s target in Lighthouse's simulated slow-4G run. The LCP element is the headline text, and switching the font loading strategy didn't change it. Check real-visitor data with Vercel Speed Insights after launch before optimising further.
+  On shop and product pages the LCP element is the first product photo (about 70 KB), which Lighthouse downloads over simulated slow 4G. Photos are resized by Shopify's CDN (`lib/shopify-image-loader.ts`) rather than Vercel's image optimiser, so they're fast on first view and don't use Vercel's image quota. Lighter photos (your own, shot on a plain background) are the next lever. Check real-visitor data with Vercel Speed Insights after launch before optimising further.
 - [ ] Check no secrets are committed: `git grep -nE "shpat_|shpss_|SECRET=.+"` should only show `.env.example` placeholders.
 - [ ] Do the manual test guide (docs/MANUAL_TESTS.md) end to end, including one real order.
 - [ ] Submit `https://YOUR-DOMAIN/sitemap.xml` in Google Search Console.

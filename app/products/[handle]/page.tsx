@@ -8,7 +8,6 @@ import { ProductAssurances } from "@/components/product/product-assurances";
 import { PurchasePanel } from "@/components/product/purchase-panel";
 import { ProductJsonLd } from "@/components/product/product-json-ld";
 import { RecommendedProducts } from "@/components/product/recommended-products";
-import { TO_CONFIRM } from "@/lib/content";
 import { getProduct, getProducts } from "@/lib/shopify/products";
 import { categoryByProductType, categoryHref, siteConfig } from "@/lib/site";
 
@@ -50,8 +49,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
   const product = await getProduct(handle);
   if (!product) notFound();
   const category = categoryByProductType(product.productType);
-  // The kit's contents and FAQ are still being confirmed, so those
-  // placeholders only appear on the kit itself.
+  // The FAQ is about the kit, so it only appears on the kit's page.
   const isKit = product.handle === siteConfig.featuredProductHandle;
 
   return (
@@ -106,7 +104,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
           </div>
           {product.description && (
             <div
-              className="mt-8 max-w-prose space-y-4 border-t border-foreground/15 pt-8 text-muted-foreground [&_a]:underline [&_strong]:text-foreground"
+              className="mt-8 max-w-prose space-y-4 border-t border-foreground/15 pt-8 text-muted-foreground [&_a]:underline [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-foreground [&_li]:ml-5 [&_strong]:text-foreground [&_ul]:list-disc"
               // Product description HTML is written by the store owner in Shopify admin.
               dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
             />
@@ -120,30 +118,16 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
             The details
           </h2>
           <dl className="mt-8 grid gap-x-12 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-            {isKit ? (
-              <>
-                <Detail term="What's included" placeholder>
-                  The full list of items in the kit will appear here once samples are confirmed.
-                </Detail>
-                <Detail term="Specifications & compatibility" placeholder>
-                  Sizes, materials and desk compatibility are being confirmed with our supplier.
-                </Detail>
-              </>
-            ) : (
-              <>
-                <Detail term="Specifications">
-                  Listed in the description above. They come from our supplier and are checked when our samples
-                  arrive.
-                </Detail>
-                <Detail term="Questions">
-                  Not sure it fits your setup?{" "}
-                  <Link href="/contact" className="underline underline-offset-4">
-                    Get in touch
-                  </Link>{" "}
-                  before you order.
-                </Detail>
-              </>
-            )}
+            <Detail term="Specifications">
+              Listed in the description above. They come from our supplier and are checked when our samples arrive.
+            </Detail>
+            <Detail term="Questions">
+              Not sure it fits your setup?{" "}
+              <Link href="/contact" className="underline underline-offset-4">
+                Get in touch
+              </Link>{" "}
+              before you order.
+            </Detail>
             <Detail term="Shipping">
               Costs and delivery times are shown at checkout. Read our{" "}
               <Link href="/shipping" className="underline underline-offset-4">
@@ -178,25 +162,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
   );
 }
 
-function Detail({
-  term,
-  placeholder = false,
-  children,
-}: {
-  term: string;
-  placeholder?: boolean;
-  children: React.ReactNode;
-}) {
+function Detail({ term, children }: { term: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <dt className="flex flex-wrap items-center gap-2 font-medium">
-        {term}
-        {placeholder && (
-          <span className="rounded-full border border-foreground/20 px-2 py-0.5 text-eyebrow font-medium uppercase text-muted-foreground">
-            {TO_CONFIRM}
-          </span>
-        )}
-      </dt>
+      <dt className="font-medium">{term}</dt>
       <dd className="text-muted-foreground">{children}</dd>
     </div>
   );

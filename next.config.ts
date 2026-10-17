@@ -5,7 +5,9 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    // Product images are served from Shopify's CDN.
+    // Product images are served and resized by Shopify's CDN (see the loader).
+    loader: "custom",
+    loaderFile: "./lib/shopify-image-loader.ts",
     remotePatterns: [{ protocol: "https", hostname: "cdn.shopify.com", pathname: "/**" }],
   },
   turbopack: {
